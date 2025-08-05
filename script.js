@@ -1,3 +1,8 @@
+// EmailJS Configuration with your credentials
+(function() {
+    emailjs.init("Rdh1X8rVEEQi73Vay"); // Your Public Key
+})();
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -135,11 +140,19 @@ filterButtons.forEach(button => {
     });
 });
 
-// Contact form handling
+
+// email functionality
+
 const contactForm = document.querySelector('.contact-form');
 if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
+        
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
         
         // Get form data
         const formData = new FormData(this);
@@ -150,20 +163,147 @@ if (contactForm) {
         
         // Simple validation
         if (!name || !email || !subject || !message) {
-            alert('Please fill in all fields');
+            showNotification('Please fill in all fields', 'error');
+            resetButton();
             return;
         }
         
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            alert('Please enter a valid email address');
+            showNotification('Please enter a valid email address', 'error');
+            resetButton();
             return;
         }
         
-        // Show success message
-        alert('Thank you for your message! I\'ll get back to you soon.');
-        this.reset();
+        // Template parameters - MATCHES YOUR TEMPLATE EXACTLY
+        const templateParams = {
+            from_name: name,                          // matches {{from_name}}
+            name: name,                               // matches {{name}}
+            time: new Date().toLocaleString(),        // matches {{time}}
+            message: message,                         // matches {{message}}
+            from_email: email,                        // for additional info
+            subject: subject                          // for additional info
+        };
+        
+        // Send email using EmailJS
+        emailjs.send('service_r01upqn', 'template_0n8sc9y', templateParams)
+            .then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+                showNotification('Thank you! Your message has been sent successfully. I\'ll get back to you soon!', 'success');
+                contactForm.reset();
+            })
+            .catch(function(error) {
+                console.log('FAILED...', error);
+                showNotification('Sorry, there was an error sending your message. Please try again or contact me directly.', 'error');
+            })
+            .finally(function() {
+                resetButton();
+            });
+        
+        function resetButton() {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+}
+
+// Enhanced Notification system
+function showNotification(message, type) {
+    // Remove existing notification
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            <span>${message}</span>
+            <button class="notification-close">&times;</button>
+        </div>
+    `;
+    
+    // Apply styles
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 10000;
+        max-width: 400px;
+        font-family: 'Poppins', sans-serif;
+        animation: slideIn 0.3s ease;
+        line-height: 1.4;
+    `;
+    
+    // Add CSS animation if not already added
+    if (!document.querySelector('#notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'notification-styles';
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            .notification-content {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .notification-content i {
+                font-size: 20px;
+                flex-shrink: 0;
+            }
+            .notification-close {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+                margin-left: auto;
+                padding: 0;
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .notification-close:hover {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Auto remove after 6 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 6000);
+    
+    // Close button functionality
+    notification.querySelector('.notification-close').addEventListener('click', () => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
     });
 }
 
