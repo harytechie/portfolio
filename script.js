@@ -111,6 +111,7 @@ const statsObserver = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Project filtering
+
 const filterButtons = document.querySelectorAll('.filter-btn');
 const projectCards = document.querySelectorAll('.project-card');
 
