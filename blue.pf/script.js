@@ -1,5 +1,5 @@
 // EmailJS Configuration with your credentials
-(function() {
+(function () {
     emailjs.init("Rdh1X8rVEEQi73Vay"); // Your Public Key
 })();
 
@@ -46,11 +46,11 @@ window.addEventListener('scroll', () => {
 function animateCounter(element, target, duration = 2000) {
     let start = 0;
     const increment = target / (duration / 16);
-    
+
     const timer = setInterval(() => {
         start += increment;
         element.textContent = Math.floor(start);
-        
+
         if (start >= target) {
             element.textContent = target;
             clearInterval(timer);
@@ -61,7 +61,7 @@ function animateCounter(element, target, duration = 2000) {
 // Skills progress bar animation
 function animateSkillBars() {
     const skillBars = document.querySelectorAll('.skill-progress');
-    
+
     skillBars.forEach((bar, index) => {
         const width = bar.getAttribute('data-width');
         if (width) {
@@ -75,7 +75,7 @@ function animateSkillBars() {
 // Stats counter animation
 function animateStats() {
     const statNumbers = document.querySelectorAll('.stat-number');
-    
+
     statNumbers.forEach(stat => {
         const target = parseInt(stat.getAttribute('data-target'));
         if (target) {
@@ -121,13 +121,13 @@ filterButtons.forEach(button => {
         filterButtons.forEach(btn => btn.classList.remove('active'));
         // Add active class to clicked button
         button.classList.add('active');
-        
+
         const filterValue = button.getAttribute('data-filter');
-        
+
         // Filter projects
         projectCards.forEach(card => {
             const cardCategory = card.getAttribute('data-category');
-            
+
             if (filterValue === 'all' || cardCategory === filterValue) {
                 card.classList.remove('hide');
                 card.style.display = 'block';
@@ -146,29 +146,29 @@ filterButtons.forEach(button => {
 
 const contactForm = document.querySelector('.contact-form');
 if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+    contactForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        
+
         // Show loading state
         const submitBtn = this.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
         submitBtn.textContent = 'Sending...';
         submitBtn.disabled = true;
-        
+
         // Get form data
         const formData = new FormData(this);
         const name = formData.get('name');
         const email = formData.get('email');
         const subject = formData.get('subject');
         const message = formData.get('message');
-        
+
         // Simple validation
         if (!name || !email || !subject || !message) {
             showNotification('Please fill in all fields', 'error');
             resetButton();
             return;
         }
-        
+
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
@@ -176,7 +176,7 @@ if (contactForm) {
             resetButton();
             return;
         }
-        
+
         // Template parameters - MATCHES YOUR TEMPLATE EXACTLY
         const templateParams = {
             from_name: name,                          // matches {{from_name}}
@@ -186,22 +186,22 @@ if (contactForm) {
             from_email: email,                        // for additional info
             subject: subject                          // for additional info
         };
-        
+
         // Send email using EmailJS
         emailjs.send('service_r01upqn', 'template_0n8sc9y', templateParams)
-            .then(function(response) {
+            .then(function (response) {
                 console.log('SUCCESS!', response.status, response.text);
                 showNotification('Thank you! Your message has been sent successfully. I\'ll get back to you soon!', 'success');
                 contactForm.reset();
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 console.log('FAILED...', error);
                 showNotification('Sorry, there was an error sending your message. Please try again or contact me directly.', 'error');
             })
-            .finally(function() {
+            .finally(function () {
                 resetButton();
             });
-        
+
         function resetButton() {
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
@@ -216,7 +216,7 @@ function showNotification(message, type) {
     if (existingNotification) {
         existingNotification.remove();
     }
-    
+
     // Create notification element
     const notification = document.createElement('div');
     notification.className = 'notification';
@@ -227,7 +227,7 @@ function showNotification(message, type) {
             <button class="notification-close">&times;</button>
         </div>
     `;
-    
+
     // Apply styles
     notification.style.cssText = `
         position: fixed;
@@ -244,7 +244,7 @@ function showNotification(message, type) {
         animation: slideIn 0.3s ease;
         line-height: 1.4;
     `;
-    
+
     // Add CSS animation if not already added
     if (!document.querySelector('#notification-styles')) {
         const style = document.createElement('style');
@@ -289,10 +289,10 @@ function showNotification(message, type) {
         `;
         document.head.appendChild(style);
     }
-    
+
     // Add to page
     document.body.appendChild(notification);
-    
+
     // Auto remove after 6 seconds
     setTimeout(() => {
         if (notification.parentNode) {
@@ -300,7 +300,7 @@ function showNotification(message, type) {
             setTimeout(() => notification.remove(), 300);
         }
     }, 6000);
-    
+
     // Close button functionality
     notification.querySelector('.notification-close').addEventListener('click', () => {
         notification.style.animation = 'slideOut 0.3s ease';
@@ -315,13 +315,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (skillsSection) {
         skillsObserver.observe(skillsSection);
     }
-    
+
     // Observe stats section  
     const statsSection = document.querySelector('.stats');
     if (statsSection) {
         statsObserver.observe(statsSection);
     }
-    
+
     // Fallback: animate immediately if intersection observer doesn't work
     setTimeout(() => {
         const skillBars = document.querySelectorAll('.skill-progress');
@@ -344,7 +344,7 @@ window.addEventListener('scroll', () => {
         if (skillsSection) {
             const rect = skillsSection.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-            
+
             if (rect.top < windowHeight * 0.8) {
                 animateSkillBars();
                 skillsAnimated = true;
@@ -357,7 +357,7 @@ window.addEventListener('scroll', () => {
 function updateActiveNavLink() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
-    
+
     let current = '';
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
@@ -365,7 +365,7 @@ function updateActiveNavLink() {
             current = section.getAttribute('id');
         }
     });
-    
+
     navLinks.forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href') === `#${current}`) {
@@ -419,3 +419,4 @@ scrollToTopBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+
