@@ -419,4 +419,13 @@ scrollToTopBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+// Remove typing cursor after animation completes
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const highlight = document.querySelector('.highlight');
+        if (highlight) {
+            highlight.classList.add('typing-complete');
+        }
+    }, 3500); // 1s delay + 2s typing + 0.5s buffer
+});
 
