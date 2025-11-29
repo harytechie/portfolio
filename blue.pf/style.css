@@ -153,7 +153,7 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    
+
 }
 
 /* Typing Animation Effect */
@@ -457,8 +457,70 @@ body {
     transform: scale(1.05);
 }
 
+
+/* 
+.about-image:hover::before,
+.about-image:focus-visible::before {
+} */
+
+#about:hover .about-image::before {
+    opacity: 1;
+    /* fade in once            */
+}
+
+/* 2.  Wrapper around the photo (stays as before)             */
+.about-image {
+    position: relative;
+    display: inline-block;
+}
+
+/* 3.  Make sure the photo sits above the glow                */
+.about-image img {
+    position: relative;
+    z-index: 2;
+}
+
+/* 4.  The glow layer                                         */
+.about-image::before {
+    content: "";
+    position: absolute;
+    inset: -18px;
+    /* spill a little outside  */
+    border-radius: 50%;
+
+    /* soft multicolour gradient (blue → violet → lavender)   */
+    background: conic-gradient(from 0deg,
+            #00dfff,
+            #5d26ff,
+            #c785ff,
+            #00dfff);
+    filter: blur(32px);
+
+    /* subtle, continuous rotation for life-like effect       */
+    animation: steadySpin 14s linear infinite;
+
+    /* start hidden, fade in when #about is hovered           */
+    opacity: 0;
+    transition: opacity .5s ease;
+
+    pointer-events: none;
+    /* keep area hoverable      */
+    z-index: 1;
+}
+
+/* 5.  Endless slow spin (no scale jumping → no flicker)      */
+@keyframes steadySpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 /* Blinking background animation on hover */
-.about-image:hover::before {
+/* .about-image:hover::before {
     content: '';
     position: absolute;
     top: 50%;
@@ -484,7 +546,7 @@ body {
         opacity: 0.8;
         transform: translate(-50%, -50%) scale(1.1);
     }
-}
+} */
 
 .image-placeholder {
     width: 250px;
@@ -497,6 +559,7 @@ body {
     color: white;
     font-size: 4rem;
 }
+
 /* Education Section */
 .education {
     padding: 100px 0;
@@ -648,6 +711,7 @@ body {
     0% {
         background-position: 0% 50%;
     }
+
     100% {
         background-position: 100% 50%;
     }
@@ -699,15 +763,18 @@ body {
         font-size: 20px;
     }
 }
+
 /* Education Section */
 .education {
-    padding: 100px 0 50px 0;  /* Reduced bottom padding */
+    padding: 100px 0 50px 0;
+    /* Reduced bottom padding */
     background: white;
 }
 
 /* Skills Section */
 .skills {
-    padding: 50px 0;  /* Reduced top padding */
+    padding: 50px 0;
+    /* Reduced top padding */
 }
 
 /* Skills Section */
@@ -753,12 +820,13 @@ body {
     width: 0%;
     transition: width 2s ease-in-out;
 }
+
 .skills-glow-title {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: 
+    text-shadow:
         0 0 10px rgba(102, 126, 234, 0.9),
         0 0 20px rgba(102, 126, 234, 0.7),
         0 0 30px rgba(118, 75, 162, 0.5);
@@ -1127,66 +1195,5 @@ body {
     .btn {
         width: 200px;
         text-align: center;
-    }
-}
-
-/* 
-.about-image:hover::before,
-.about-image:focus-visible::before {
-} */
-
-#about:hover .about-image::before {
-    opacity: 1;
-    /* fade in once            */
-}
-
-/* 2.  Wrapper around the photo (stays as before)             */
-.about-image {
-    position: relative;
-    display: inline-block;
-}
-
-/* 3.  Make sure the photo sits above the glow                */
-.about-image img {
-    position: relative;
-    z-index: 2;
-}
-
-/* 4.  The glow layer                                         */
-.about-image::before {
-    content: "";
-    position: absolute;
-    inset: -18px;
-    /* spill a little outside  */
-    border-radius: 50%;
-
-    /* soft multicolour gradient (blue → violet → lavender)   */
-    background: conic-gradient(from 0deg,
-            #00dfff,
-            #5d26ff,
-            #c785ff,
-            #00dfff);
-    filter: blur(32px);
-
-    /* subtle, continuous rotation for life-like effect       */
-    animation: steadySpin 14s linear infinite;
-
-    /* start hidden, fade in when #about is hovered           */
-    opacity: 0;
-    transition: opacity .5s ease;
-
-    pointer-events: none;
-    /* keep area hoverable      */
-    z-index: 1;
-}
-
-/* 5.  Endless slow spin (no scale jumping → no flicker)      */
-@keyframes steadySpin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
     }
 }

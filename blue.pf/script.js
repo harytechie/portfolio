@@ -420,8 +420,8 @@ scrollToTopBtn.addEventListener('click', () => {
     });
 });
 // Remove typing cursor after animation completes
-window.addEventListener('load', function() {
-    setTimeout(function() {
+window.addEventListener('load', function () {
+    setTimeout(function () {
         const highlight = document.querySelector('.highlight');
         if (highlight) {
             highlight.classList.add('typing-complete');
