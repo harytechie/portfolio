@@ -1,3 +1,18 @@
+// Preloader logic
+document.body.classList.add('loading');
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+                document.body.classList.remove('loading');
+            }, 500);
+        }
+    }, 4000); // 4 seconds
+});
+
 // EmailJS Configuration with your credentials
 (function () {
     emailjs.init("Rdh1X8rVEEQi73Vay"); // Your Public Key
@@ -419,6 +434,19 @@ scrollToTopBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+// Cursor Follower Effect
+const cursor = document.querySelector('.cursor-follower');
+
+document.addEventListener('mousemove', (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+
+    if (cursor) {
+        cursor.style.left = `${x}px`;
+        cursor.style.top = `${y}px`;
+    }
+});
+
 // Remove typing cursor after animation completes
 window.addEventListener('load', function () {
     setTimeout(function () {
