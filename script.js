@@ -13,10 +13,10 @@ window.addEventListener('load', () => {
     }, 4000); // 4 seconds
 });
 
-// EmailJS Configuration with your credentials
 (function () {
     emailjs.init("Rdh1X8rVEEQi73Vay"); // Your Public Key
 })();
+
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
